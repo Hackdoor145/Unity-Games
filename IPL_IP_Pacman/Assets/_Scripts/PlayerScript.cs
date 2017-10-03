@@ -1,15 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PlayerScript : MonoBehaviour {
+public class PlayerScript : MonoBehaviour
+{
 
+    //velocidade de movimento do jogador
     public float velocidade;
-    public Rigidbody2D rb2D;
+    //pontos
+    private int pontos;
 
     // Use this for initialization
-    void Start () {
-        rb2D = GetComponent<Rigidbody2D>();
+    void Start()
+    {
+
     }
 
     // Update is called once per frame
@@ -19,25 +24,41 @@ public class PlayerScript : MonoBehaviour {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             transform.position += Vector3.left * velocidade * Time.deltaTime;
-            rb2D.MoveRotation(rb2D.rotation + velocidade * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
             transform.position += Vector3.right * velocidade * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(0,180,0);
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        else if (Input.GetKey(KeyCode.UpArrow))
         {
             transform.position += Vector3.up * velocidade * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(0, 0, -90);
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow))
         {
             transform.position += Vector3.down * velocidade * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(0, 0, 90);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Bateu!");
-        transform.position += new Vector3(0, 0, 0);
+        //comeu?
+        if (collision.gameObject.tag == "Food")
+        {
+            Destroy(collision.gameObject);
+            pontos+=100;
+            //Debug.Log(pontos);
+        }
+        else if (collision.gameObject.tag == "PowerFood")
+        {
+            Destroy(collision.gameObject);
+            pontos += 500;
+        }
+
+
+
     }
 }

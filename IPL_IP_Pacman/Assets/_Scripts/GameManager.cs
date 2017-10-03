@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     int[,] tileMatrix = {
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -36,36 +37,62 @@ public class GameManager : MonoBehaviour {
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
 
-    public GameObject parede;
+    public GameObject wall;
     public GameObject square;
-    public GameObject comida;
-    
+    public GameObject food;
+    public GameObject powerFood;
 
-    
+
+
 
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
+        float numeroLinhas = tileMatrix.GetLength(0);
+        float numeroColunas = tileMatrix.GetLength(1);
+        float mapaLinhas = numeroLinhas / 2;
+        float mapaColunas = numeroColunas / 2;
 
-        float mapaLinhas = tileMatrix.GetLength(0) / 2;
-        float mapaColunas = tileMatrix.GetLength(1) / 2;
-        for (int i = 0;i < tileMatrix.GetLength(0); i++){
-            for (int j = 0; j < tileMatrix.GetLength(1); j++){
-                if (tileMatrix[i, j] == 1){
+        for (int i = 0; i < numeroLinhas; i++)
+        {
+            for (int j = 0; j < numeroColunas; j++)
+            {
+                if (tileMatrix[i, j] == 1)
+                {
 
-                    Instantiate(parede, new Vector3(j-mapaLinhas+1.5f,i-mapaColunas, 0), Quaternion.identity);
+                    Instantiate(wall, new Vector3(j - mapaLinhas + 1.5f, i - mapaColunas, 0), Quaternion.identity);
+
+                }
+                else if (tileMatrix[i, j] == 0)
+                {
                     
+                    if ((i == 1 && j == 1) || (i == 1 && j == 26) || (i == 29 && j == 26) || (i == 29 && j == 1))
+                    {
+
+                        Instantiate(powerFood, new Vector3(j - mapaLinhas + 1.5f, i - mapaColunas, 0), Quaternion.identity);
+                        Instantiate(square, new Vector3(j - mapaLinhas + 1.5f, i - mapaColunas, 0), Quaternion.identity);
+
+
+                    }
+                    else
+                    {
+                        Instantiate(square, new Vector3(j - mapaLinhas + 1.5f, i - mapaColunas, 0), Quaternion.identity);
+                        Instantiate(food, new Vector3(j - mapaLinhas + 1.5f, i - mapaColunas, 0), Quaternion.identity);
+
+                    }
+
+
+
                 }
-                else if (tileMatrix[i, j] == 0){
-                    Instantiate(square, new Vector3(j - mapaLinhas + 1.5f, i - mapaColunas, 0), Quaternion.identity);
-                    Instantiate(comida, new Vector3(j - mapaLinhas + 1.5f, i - mapaColunas, 0), Quaternion.identity);
-                }
+
             }
         }
     }
 
     // Update is called once per frame
-    void Update() {
-        
+    void Update()
+    {
+
     }
 }
